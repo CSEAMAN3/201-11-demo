@@ -60,7 +60,7 @@ function handleGoatClick(event) {
     if (clicks === maxClicksAllowed) {
       goatContainer.removeEventListener("click", handleGoatClick);
       goatContainer.className = "no-voting";
-      resultsButton.addEventListener("click", renderResults);
+      resultsButton.addEventListener("click", renderChart);
       resultsButton.className = "clicks-allowed";
     } else {
       renderGoats();
@@ -90,3 +90,47 @@ const away = new Goat("Goat Away", "assets/images/goat-away.jpg");
 renderGoats();
 
 goatContainer.addEventListener("click", handleGoatClick);
+
+function renderChart() {
+  const goatNames = [];
+  const goatViews = [];
+  const goatClicks = [];
+
+  for (let i = 0; i < allGoats.length; i++) {
+    goatNames.push(allGoats[i].name);
+    goatViews.push(allGoats[i].views);
+    goatClicks.push(allGoats[i].clicks);
+  }
+
+  // console.log(goatNames);
+  // console.log(goatViews);
+  // console.log(goatClicks);
+
+  const data = {
+    labels: goatNames,
+    datasets: [
+      {
+        label: "clicks",
+        data: goatClicks,
+        backgroundColor: ["#42032C"],
+        borderColor: ["#D36B00"],
+        borderWidth: 1,
+      },
+      {
+        label: "views",
+        data: goatViews,
+        backgroundColor: ["#D36B00"],
+        borderColor: ["#42032C"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const config = {
+    type: "bar",
+    data: data,
+  };
+
+  const goatChart = document.getElementById("chart");
+  const myChart = new Chart(goatChart, config);
+}

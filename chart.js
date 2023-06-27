@@ -25,13 +25,16 @@ function Goat(name, src) {
   allGoats.push(this);
 }
 
+let usedGoats = [];
+
 function renderGoats() {
   // we need to generate a number to reference the goat we want to render onto the page
   let goat1 = getRandomNumber();
   let goat2 = getRandomNumber();
 
   // how could we prevent goat1 being the same number a goat2?
-  while (goat1 === goat2) {
+  while (goat1 === goat2 || usedGoats.includes(goat1) || usedGoats.includes(goat2)) {
+    goat1 = getRandomNumber();
     goat2 = getRandomNumber();
   }
 
@@ -42,6 +45,9 @@ function renderGoats() {
   image2.alt = allGoats[goat2].name;
   allGoats[goat1].views++;
   allGoats[goat2].views++;
+
+  usedGoats = [];
+  usedGoats.push(goat1, goat2);
 }
 
 function handleGoatClick(event) {
@@ -60,7 +66,7 @@ function handleGoatClick(event) {
     if (clicks === maxClicksAllowed) {
       goatContainer.removeEventListener("click", handleGoatClick);
       goatContainer.className = "no-voting";
-      resultsButton.addEventListener("click", renderResults);
+      resultsButton.addEventListener("click", renderChart);
       resultsButton.className = "clicks-allowed";
     } else {
       renderGoats();
@@ -90,3 +96,46 @@ const away = new Goat("Goat Away", "assets/images/goat-away.jpg");
 renderGoats();
 
 goatContainer.addEventListener("click", handleGoatClick);
+
+function renderChart() {
+  const goatNames = [];
+  const goatViews = [];
+  const goatClicks = [];
+
+  for (let i = 0; i < allGoats.length; i++) {
+    goatNames.push(allGoats[i].name);
+    goatViews.push(allGoats[i].views);
+    goatClicks.push(allGoats[i].clicks);
+  }
+
+  const data = {
+    labels: goatNames,
+    datasets: [
+      {
+        label: "Views",
+        data: goatViews,
+        backgroundColor: ["teal", "coral"],
+        borderColor: ["tomato", "cornflowerblue"],
+        borderWidth: 1,
+      },
+      {
+        label: "Clicks",
+        data: goatClicks,
+        backgroundColor: ["tomato", "cornflowerblue"],
+        borderColor: ["teal", "coral"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const config = {
+    type: "doughnut",
+    data: data,
+  };
+
+  const goatChart = document.getElementById("chart");
+  const myChart = new Chart(goatChart, config);
+}
+
+// have a way to check / note what images have been
+//
