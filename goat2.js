@@ -78,16 +78,16 @@ function renderResults() {
   }
 }
 
-const cruising = new Goat("Cruising Goat", "assets/images/cruisin-goat.jpg");
-const float = new Goat("Float Your Goat", "assets/images/float-your-goat.jpg");
-const hand = new Goat("Goat Out of Hand", "assets/images/goat-out-of-hand.jpg");
-const kissing = new Goat("Kissing Goat", "assets/images/kissing-goat.jpg");
-const sassy = new Goat("Sassy Goat", "assets/images/sassy-goat.jpg");
-const smiling = new Goat("Smiling Goat", "assets/images/smiling-goat.jpg");
-const sweater = new Goat("Sweater Goat", "assets/images/sweater-goat.jpg");
-const away = new Goat("Goat Away", "assets/images/goat-away.jpg");
+// const cruising = new Goat("Cruising Goat", "assets/images/cruisin-goat.jpg");
+// const float = new Goat("Float Your Goat", "assets/images/float-your-goat.jpg");
+// const hand = new Goat("Goat Out of Hand", "assets/images/goat-out-of-hand.jpg");
+// const kissing = new Goat("Kissing Goat", "assets/images/kissing-goat.jpg");
+// const sassy = new Goat("Sassy Goat", "assets/images/sassy-goat.jpg");
+// const smiling = new Goat("Smiling Goat", "assets/images/smiling-goat.jpg");
+// const sweater = new Goat("Sweater Goat", "assets/images/sweater-goat.jpg");
+// const away = new Goat("Goat Away", "assets/images/goat-away.jpg");
 
-renderGoats();
+// renderGoats();
 
 goatContainer.addEventListener("click", handleGoatClick);
 
@@ -133,4 +133,34 @@ function renderChart() {
 
   const goatChart = document.getElementById("chart");
   const myChart = new Chart(goatChart, config);
+  setLocalStorage();
 }
+
+function setLocalStorage() {
+  localStorage.setItem("goats", JSON.stringify(allGoats));
+}
+
+function checkLocalStorage() {
+  const localGoats = JSON.parse(localStorage.getItem("goats"));
+  // console.log(localGoats);
+  if (localGoats) {
+    allGoats = localGoats;
+  } else {
+    console.log("new goats please");
+    const cruising = new Goat("Cruising Goat", "assets/images/cruisin-goat.jpg");
+    const float = new Goat("Float Your Goat", "assets/images/float-your-goat.jpg");
+    const hand = new Goat("Goat Out of Hand", "assets/images/goat-out-of-hand.jpg");
+    const kissing = new Goat("Kissing Goat", "assets/images/kissing-goat.jpg");
+    const sassy = new Goat("Sassy Goat", "assets/images/sassy-goat.jpg");
+    const smiling = new Goat("Smiling Goat", "assets/images/smiling-goat.jpg");
+    const sweater = new Goat("Sweater Goat", "assets/images/sweater-goat.jpg");
+    const away = new Goat("Goat Away", "assets/images/goat-away.jpg");
+  }
+}
+
+checkLocalStorage();
+renderGoats();
+// create the setLocalStorage function and invoke at the bottom of renderChart()
+// create the checklocalStorage()
+// comment out the new instances and place in the else part of if statement
+// invoke the checkLocalStorage()
